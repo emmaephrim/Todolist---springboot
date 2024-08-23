@@ -1,0 +1,21 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i ./styles.css -o ../resources/static/main.css --minify",
+    "watch": "tailwindcss -i ./styles.css -o ../resources/static/main.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  },
+  "dependencies": {
+    "bootstrap-icons": "^1.11.3",
+    "flowbite": "^2.5.1"
+  }
+}
