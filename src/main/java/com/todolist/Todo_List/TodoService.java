@@ -3,7 +3,6 @@ package com.todolist.Todo_List;
 import java.util.ArrayList; // Add this import statement
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.unit.DataSize;
 
@@ -11,8 +10,12 @@ import com.todolist.Todo_List.model.Todo;
 
 @Service
 public class TodoService {
-    @Autowired
-    TodoRepository todoRepository;
+
+    private final TodoRepository todoRepository;
+
+    public TodoService(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
 
     public List<Todo> getAllTodos() {
         ArrayList<Todo> todos = new ArrayList<>();
@@ -22,6 +25,16 @@ public class TodoService {
 
     public Todo getTodoById(Long id) {
         return todoRepository.findById(id).get();
+    }
+
+    public List<Todo> getAllActiveTodos() {
+        ArrayList<Todo> activeTodos = new ArrayList<>();
+        todoRepository.findAll().forEach(todo -> {
+            if (!todo.isSoftDeleted()) {
+                activeTodos.add(todo);
+            }
+        });
+        return activeTodos;
     }
 
     public void saveOrUpdate(Todo todo) {
@@ -64,6 +77,12 @@ public class TodoService {
             }
         });
         return todos;
+    }
+
+    public void restoreTodoById(Long id) {
+        Todo todo = todoRepository.findById(id).get();
+        todo.setSoftDeleted(false);
+        todoRepository.save(todo);
     }
 
     public void updateTodoDate(Long id, DataSize date) {

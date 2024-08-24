@@ -5,12 +5,12 @@
     <meta charset="UTF-8" />
     <link
       rel="shortcut icon"
-      href="images/todo_icon_1.png"
+      th:href="@{/images/todo_icon_1.png}"
       type="image/x-icon"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="main.css" />
-    <link rel="stylesheet" href="bootstrap-icons.css" />
+    <link rel="stylesheet" th:href="@{/main.css}" />
+    <link rel="stylesheet" th:href="@{/bootstrap-icons.css}" />
     <title>Todo List</title>
   </head>
   <body>
@@ -23,7 +23,11 @@
           class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
         >
           <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="images/todo_icon_1.png" class="h-8" alt="Todo Logo" />
+            <img
+              th:src="@{/images/todo_icon_1.png}"
+              class="h-8"
+              alt="Todo Logo"
+            />
             <span
               class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
               >Todo List</span
@@ -51,8 +55,11 @@
         <span class="border-b-2 border-b-gray-700">Create</span> Todo
       </h1>
 
-      <form th:action="@{/create-todo}" method="post" th:object="${todo}">
+      <form th:action="@{/save-todo}" method="post" th:object="${todo}">
         <div class="mb-6 max-w-md ml-auto mr-auto">
+          <!-- Hidden ID Field -->
+          <input type="hidden" th:field="*{id}" />
+
           <div>
             <label
               for="title"
@@ -63,6 +70,21 @@
               type="text"
               id="title"
               th:field="*{title}"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Todo Title"
+              required
+            />
+          </div>
+          <div th:if="${todo.id != null}">
+            <label
+              for="status"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize"
+              >Status</label
+            >
+            <input
+              type="text"
+              id="status"
+              th:field="*{status}"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Todo Title"
               required
@@ -100,12 +122,14 @@
             type="submit"
             class="mt-4 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
           >
-            Submit
+            <span th:text="${todo.id != null ? 'Update' : 'Create'}"
+              >Create</span
+            >
           </button>
         </div>
       </form>
     </section>
 
-    <script src="flowbite.min.js"></script>
+    <script th:src="@{/flowbite.min.js}"></script>
   </body>
 </html>

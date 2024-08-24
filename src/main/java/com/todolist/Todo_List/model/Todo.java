@@ -17,21 +17,21 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = true)
     private String title;
-    @Column
+    @Column(updatable = true)
     private String description;
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'incomplete'")
+    @Column(nullable = false, updatable = true, columnDefinition = "VARCHAR(255) DEFAULT 'incomplete'")
     private String status;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(nullable = false, updatable = true, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isSoftDeleted;
 
     public Todo() {
-        this.status = "incomplete";
+        this.status = "Incomplete";
     }
 
     public Long getId() {
