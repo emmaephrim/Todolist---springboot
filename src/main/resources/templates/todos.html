@@ -161,6 +161,7 @@
         <h1 class="text-center p-4 font-bold uppercase">
           <span class="border-b-2 border-b-gray-700">All</span> Todos
         </h1>
+        <h1 th:text="${message}"></h1>
         <ul>
           <li th:each="todo : ${todos}">
             <span th:text="${todo.title}">Todo Name</span>

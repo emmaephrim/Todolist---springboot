@@ -2,6 +2,8 @@ package com.todolist.Todo_List.model;
 
 import java.util.Date; // Add this import statement
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,24 +21,17 @@ public class Todo {
     private String title;
     @Column
     private String description;
-    // @Column(nullable = false)
     @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'incomplete'")
     private String status;
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isSoftDeleted;
 
-    // public boolean isSoftDeleted() {
-    // return isSoftDeleted;
-    // }
-
-    // public void setSoftDeleted(boolean isSoftDeleted) {
-    // this.isSoftDeleted = isSoftDeleted;
-    // }
-
     public Todo() {
+        this.status = "incomplete";
     }
 
     public Long getId() {

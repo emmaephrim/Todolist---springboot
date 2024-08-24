@@ -159,7 +159,10 @@
       <!-- =================Table of Todos============= -->
       <section>
         <h1 class="text-center p-4 font-bold uppercase">
-          <span class="border-b-2 border-b-gray-700">All</span> Todos
+          <span class="border-b-2 border-b-gray-700"
+            ><i class="bi bi-recycle"></i
+          ></span>
+          Trash
         </h1>
         <ul>
           <li th:each="todo : ${todos}">
@@ -167,13 +170,6 @@
           </li>
         </ul>
         <div class="md:px-40">
-          <div class="w-full text-end pe-5 mb-6">
-            <a href="create-todo">
-              <i
-                class="bi bi-plus-circle-fill text-4xl text-blue-600 hover:text-blue-800"
-              ></i>
-            </a>
-          </div>
           <table id="example" class="display" style="width: 100%">
             <thead>
               <tr>
@@ -191,7 +187,13 @@
                 <td class="flex justify-center items-center">
                   <a
                     href=""
-                    class="text-red-700 bg-red-200 hover:bg-red-100 focus:ring-4 focus:ring-red-300 font-medium text-lg px-2 py-1 m-1"
+                    class="text-yellow-700 bg-yellow-200 hover:bg-yellow-100 focus:ring-4 focus:ring-yellow-300 font-medium text-lg px-2 py-1 mx-1"
+                  >
+                    <i class="bi bi-recycle"></i>
+                  </a>
+                  <a
+                    href=""
+                    class="text-red-700 bg-red-200 hover:bg-red-100 focus:ring-4 focus:ring-red-300 font-medium text-lg px-2 py-1 mx-1"
                   >
                     <i class="bi bi-trash-fill"></i>
                   </a>

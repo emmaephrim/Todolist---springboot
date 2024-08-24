@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -50,7 +51,7 @@
         <span class="border-b-2 border-b-gray-700">Create</span> Todo
       </h1>
 
-      <form class="">
+      <form th:action="@{/create-todo}" method="post" th:object="${todo}">
         <div class="mb-6 max-w-md ml-auto mr-auto">
           <div>
             <label
@@ -61,7 +62,7 @@
             <input
               type="text"
               id="title"
-              name="title"
+              th:field="*{title}"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Todo Title"
               required
@@ -76,9 +77,8 @@
             <input
               type="date"
               id="date"
-              name="date"
+              th:field="*{date}"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Flowbite"
               required
             />
           </div>
@@ -90,13 +90,11 @@
             >
             <textarea
               cols="5"
-              type="text"
               id="description"
-              name="description"
+              th:field="*{description}"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Description"
-            >
-            </textarea>
+            ></textarea>
           </div>
           <button
             type="submit"
