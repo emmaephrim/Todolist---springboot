@@ -22,17 +22,10 @@ public class TodoController {
     public String getAllTodos(Model model, @ModelAttribute("message") String message) {
         model.addAttribute("todos", todoService.getAllTodos());
         model.addAttribute("message", message);
-
         return "todos";
     }
 
-    // @GetMapping("/{id}")
-    // public String getTodoById(Model model, @PathVariable Long id) {
-    // model.addAttribute("todo", todoService.getTodoById(id));
-    // return "todo";
-    // }
-
-    @GetMapping("/create-todo") // Add this method
+    @GetMapping("/create-todo")
     public String createTodo(Model model) {
         model.addAttribute("todo", new Todo());
         return "create-todo";
@@ -44,6 +37,12 @@ public class TodoController {
         todoService.saveOrUpdate(todo);
         redirectAttributes.addFlashAttribute("message", "Todo created successfully!");
         return "redirect:/todos";
+    }
+
+    @GetMapping("/edit-todo/{id}")
+    public String getTodoById(Model model, @PathVariable Long id) {
+        model.addAttribute("todo", todoService.getTodoById(id));
+        return "create-todo";
     }
 
     @PostMapping("/update-todo")
