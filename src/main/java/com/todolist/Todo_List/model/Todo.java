@@ -17,17 +17,16 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, updatable = true)
+    @Column(nullable = false)
     private String title;
-    @Column(updatable = true)
+    @Column
     private String description;
-    @Column(nullable = false, updatable = true, columnDefinition = "VARCHAR(255) DEFAULT 'incomplete'")
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Incomplete'")
     private String status;
-    @Column(nullable = false, updatable = true)
+    @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
-
-    @Column(nullable = false, updatable = true, columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isSoftDeleted;
 
     public Todo() {
