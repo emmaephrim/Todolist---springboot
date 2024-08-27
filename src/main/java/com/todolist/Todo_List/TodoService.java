@@ -49,7 +49,17 @@ public class TodoService {
         todoRepository.deleteAll();
     }
 
-    public boolean todoExists(Long id) {
+    public List<Todo> getAllTodosByStatus(String status) {
+        ArrayList<Todo> todosByStatus = new ArrayList<>();
+        todoRepository.findAll().forEach(todo -> {
+            if (todo.getStatus().equals(status)) {
+                todosByStatus.add(todo);
+            }
+        });
+        return todosByStatus;
+    }
+
+    boolean todoExists(Long id) {
         return todoRepository.existsById(id);
     }
 

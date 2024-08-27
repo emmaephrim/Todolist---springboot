@@ -3,10 +3,13 @@ package com.todolist.Todo_List.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.todolist.Todo_List.TodoService;
@@ -36,8 +39,8 @@ public class TodoController {
         return "todo-form";
     }
 
-    @PostMapping("/save-todo")
-    public String saveTodo(@ModelAttribute Todo todo, Model model, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = { "/save-todo", "/update-todo" }, method = { RequestMethod.POST, RequestMethod.PUT })
+    public String saveOrUpdateTodo(@ModelAttribute Todo todo, Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("todo", todo);
         boolean isUpdating = todo.getId() != null;
         todoService.saveOrUpdate(todo);
@@ -49,21 +52,7 @@ public class TodoController {
         return "redirect:/todos";
     }
 
-    @PostMapping("/update-todo-status")
-    public String updateTodoStatus(@ModelAttribute Todo objToUpdate, Model model,
-            RedirectAttributes redirectAttributes) {
-        model.addAttribute("objToUpdate", objToUpdate);
-        boolean isUpdating = objToUpdate.getId() != null;
-        todoService.saveOrUpdate(objToUpdate);
-        if (isUpdating) {
-            redirectAttributes.addFlashAttribute("message", "Todo updated successfully!");
-        } else {
-            redirectAttributes.addFlashAttribute("message", "Todo created successfully!");
-        }
-        return "redirect:/todos";
-    }
-
-    @PostMapping("/soft-delete-todo/{id}")
+    @PutMapping("/soft-delete-todo/{id}")
     public String softDeleteTodo(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         todoService.softDeleteTodoById(id);
         redirectAttributes.addFlashAttribute("message", "Todo moved to trash successfully!");
@@ -76,14 +65,20 @@ public class TodoController {
         return "trash";
     }
 
-    @PostMapping("/restore-todo/{id}")
+    @GetMapping("/todos/status/{status}")
+    public String getTodosByStatus(Model model, @PathVariable String status) {
+        model.addAttribute("todos", todoService.getAllTodosByStatus(status));
+        return "todos";
+    }
+
+    @PutMapping("/restore-todo/{id}")
     public String restoreTodoById(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         todoService.restoreTodoById(id);
         redirectAttributes.addFlashAttribute("message", "Todo restored successfully!");
         return "redirect:/trash";
     }
 
-    @PostMapping("/delete-todo/{id}")
+    @DeleteMapping("/delete-todo/{id}")
     public String deleteTodoById(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         todoService.deleteTodoById(id);
         redirectAttributes.addFlashAttribute("message", "Todo deleted successfully!");

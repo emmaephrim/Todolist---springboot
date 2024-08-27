@@ -193,21 +193,21 @@
                     >
                       <li>
                         <a
-                          href="#"
+                          href="/todos/status/Pending"
                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >Pending</a
                         >
                       </li>
                       <li>
                         <a
-                          href="#"
+                          href="/todos/status/In Progress"
                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >In Progress</a
                         >
                       </li>
                       <li>
                         <a
-                          href="#"
+                          href="/todos/status/Completed"
                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >Completed</a
                         >
@@ -215,14 +215,14 @@
 
                       <li>
                         <a
-                          href="#"
+                          href="/todos/status/Completed"
                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >Canceled</a
                         >
                       </li>
                       <li>
                         <a
-                          href="#"
+                          href="/todos/status/Incomplete"
                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >Incomplete</a
                         >
@@ -230,7 +230,7 @@
                     </ul>
                     <div class="py-1">
                       <a
-                        href="#"
+                        th:href="@{/todos/status/Archived}"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
                         >Archived</a
                       >
@@ -249,7 +249,7 @@
           </div>
         </nav>
       </header>
-      <!-- =================Table of Todos============= -->
+      <!-- =================Toast============= -->
       <div
         th:if="${message != ''}"
         class="absolute right-0 pe-1 pt-1"
@@ -303,6 +303,7 @@
         </div>
       </div>
 
+      <!-- =================Table of Todos============= -->
       <section>
         <h1 class="text-center p-4 font-bold uppercase">
           <span class="border-b-2 border-b-gray-700">Active</span> Todos
@@ -332,14 +333,25 @@
                 <td th:text="${todo.title}" />
                 <td>
                   <!-- Modal toggle -->
-                  <button
-                    th:attr="data-modal-target=${'update-status-modal-' + todo.id}, data-modal-toggle=${'update-status-modal-' + todo.id}"
-                    class="flex justify-between text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button"
+                  <!-- Assign the button class based on the todo.status -->
+                  <div
+                    th:with="btnClass=${todo.status == 'Pending' ? 'bg-gray-500 hover:bg-gray-600' :
+todo.status == 'In Progress' ? 'bg-blue-500 hover:bg-blue-600' :
+todo.status == 'Completed' ? 'bg-green-500 hover:bg-green-600' :
+todo.status == 'Canceled' ? 'bg-red-500 hover:bg-red-600' :
+todo.status == 'Incomplete' ? 'bg-orange-500 hover:bg-orange-600' :
+todo.status == 'Archived' ? 'bg-purple-500 hover:bg-purple-600' : ''}"
                   >
-                    <span th:text="${todo.status}"></span>
-                    <i class="bi bi-pencil ml-1"></i>
-                  </button>
+                    <button
+                      th:attr="data-modal-target=${'update-status-modal-' + todo.id}, data-modal-toggle=${'update-status-modal-' + todo.id}"
+                      th:class="'flex-nowrap text-nowrap flex justify-between text-white w-full focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 ' + ${btnClass}"
+                      type="button"
+                    >
+                      <span th:text="${todo.status}"></span>
+                      <i class="bi bi-pencil ml-1"></i>
+                    </button>
+                  </div>
+
                   <!-- =========================Form loop modal for status update================= -->
                   <!-- Main modal -->
                   <div
@@ -389,10 +401,10 @@
                         <div class="p-4 md:p-5">
                           <form
                             class="space-y-4"
-                            th:action="@{/update-todo-status}"
-                            th:with="objToUpdate=${todo}"
-                            th:object="${objToUpdate}"
-                            method="post"
+                            th:action="@{/update-todo}"
+                            th:with="objToUpdate = ${todo}"
+                            th:object="${todo}"
+                            th:method="put"
                           >
                             <div>
                               <label
@@ -402,6 +414,7 @@
                               >
                               <select
                                 id=""
+                                name="status"
                                 field="*{status}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               >
@@ -435,9 +448,6 @@
                                   th:selected="${todo.status == 'Canceled'}"
                                 >
                                   Canceled
-                                  <span
-                                    th:text="${todo.status} +'' + ${todo.id} "
-                                  ></span>
                                 </option>
                                 <option
                                   th:value="'Incomplete'"
@@ -453,6 +463,36 @@
                                 </option>
                               </select>
                             </div>
+                            <input
+                              name="id"
+                              type="hidden"
+                              field="*{id}"
+                              th:value="${objToUpdate.id}"
+                            />
+                            <input
+                              name="description"
+                              type="hidden"
+                              field="*{description}"
+                              th:value="${objToUpdate.description}"
+                            />
+                            <input
+                              name="date"
+                              type="hidden"
+                              field="*{date}"
+                              th:value="${objToUpdate.date}"
+                            />
+                            <input
+                              name="isSoftDeleted"
+                              type="hidden"
+                              field="*{isSoftDeleted}"
+                              th:value="${objToUpdate.isSoftDeleted}"
+                            />
+                            <input
+                              name="title"
+                              type="hidden"
+                              field="*{title}"
+                              th:value="${objToUpdate.title}"
+                            />
                             <button
                               type="submit"
                               class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -476,7 +516,7 @@
                   </a>
                   <form
                     th:action="@{/soft-delete-todo/{id}(id=${todo.id})}"
-                    method="post"
+                    th:method="put"
                     th:object="${todo}"
                   >
                     <!-- <input
