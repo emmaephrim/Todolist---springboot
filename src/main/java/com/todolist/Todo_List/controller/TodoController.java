@@ -49,6 +49,20 @@ public class TodoController {
         return "redirect:/todos";
     }
 
+    @PostMapping("/update-todo-status")
+    public String updateTodoStatus(@ModelAttribute Todo objToUpdate, Model model,
+            RedirectAttributes redirectAttributes) {
+        model.addAttribute("objToUpdate", objToUpdate);
+        boolean isUpdating = objToUpdate.getId() != null;
+        todoService.saveOrUpdate(objToUpdate);
+        if (isUpdating) {
+            redirectAttributes.addFlashAttribute("message", "Todo updated successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Todo created successfully!");
+        }
+        return "redirect:/todos";
+    }
+
     @PostMapping("/soft-delete-todo/{id}")
     public String softDeleteTodo(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         todoService.softDeleteTodoById(id);
@@ -74,5 +88,11 @@ public class TodoController {
         todoService.deleteTodoById(id);
         redirectAttributes.addFlashAttribute("message", "Todo deleted successfully!");
         return "redirect:/trash";
+    }
+
+    @GetMapping("/table")
+    public String getTable(Model model) {
+        // model.addAttribute("todos", todoService.getAllActiveTodos());
+        return "table";
     }
 }

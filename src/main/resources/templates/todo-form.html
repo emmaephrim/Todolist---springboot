@@ -81,14 +81,29 @@
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize"
               >Status</label
             >
-            <input
+            <select
+              id=""
+              th:field="*{status}"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option selected th:value="__placeholder__" disabled>
+                Choose a Status
+              </option>
+              <option th:value="Pending">Pending</option>
+              <option th:value="'In Progress'">In Progress</option>
+              <option th:value="Completed">Completed</option>
+              <option th:value="Canceled">Canceled</option>
+              <option th:value="Incomplete">Incomplete</option>
+              <option th:value="Archived">Archived</option>
+            </select>
+            <!-- <input
               type="text"
               id="status"
-              th:field="*{status}"
+          
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Todo Title"
               required
-            />
+            /> -->
           </div>
           <div>
             <label
