@@ -240,8 +240,9 @@
       </header>
       <!-- =================Toast============= -->
       <div
-        th:if="${message != ''}"
-        class="absolute right-0 pe-1 pt-1"
+        th:if="${message != null}"
+        th:class="'absolute right-0 pe-1 pt-1 '"
+        th:classappend="${message == '' ? 'hidden' : ''}"
         id="toast"
       >
         <div
@@ -265,7 +266,11 @@
             </svg>
             <span class="sr-only">Check icon</span>
           </div>
-          <div class="ms-3 text-sm font-normal" th:text="${message}" />
+          <div
+            id="toastMessage"
+            class="ms-3 text-sm font-normal"
+            th:text="${message}"
+          />
           <button
             type="button"
             class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -317,12 +322,12 @@
                   <!-- Modal toggle -->
                   <!-- Assign the button class based on the todo.status -->
                   <div
-                    th:with="btnClass=${todo.status == 'Pending' ? 'bg-gray-500 hover:bg-gray-600' :
-todo.status == 'In Progress' ? 'bg-blue-500 hover:bg-blue-600' :
-todo.status == 'Completed' ? 'bg-green-500 hover:bg-green-600' :
-todo.status == 'Canceled' ? 'bg-red-500 hover:bg-red-600' :
-todo.status == 'Incomplete' ? 'bg-orange-500 hover:bg-orange-600' :
-todo.status == 'Archived' ? 'bg-purple-500 hover:bg-purple-600' : ''}"
+                    th:with="btnClass=${todo.status == 'pending' ? 'bg-gray-500 hover:bg-gray-600' :
+todo.status == 'in progress' ? 'bg-blue-500 hover:bg-blue-600' :
+todo.status == 'completed' ? 'bg-green-500 hover:bg-green-600' :
+todo.status == 'canceled' ? 'bg-red-500 hover:bg-red-600' :
+todo.status == 'incomplete' ? 'bg-orange-500 hover:bg-orange-600' :
+todo.status == 'archived' ? 'bg-purple-500 hover:bg-purple-600' : ''}"
                     th:classappend="'flex justify-center'"
                   >
                     <button

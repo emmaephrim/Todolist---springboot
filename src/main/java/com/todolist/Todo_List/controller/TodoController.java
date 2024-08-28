@@ -67,7 +67,7 @@ public class TodoController {
 
     @GetMapping("/todos/status/{status}")
     public String getTodosByStatus(Model model, @PathVariable String status) {
-        model.addAttribute("todos", todoService.getAllTodosByStatus(status));
+        model.addAttribute("todos", todoService.getAllTodosByStatus(status.toLowerCase()));
         return "todos";
     }
 

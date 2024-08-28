@@ -30,7 +30,8 @@ public class TodoService {
     public List<Todo> getAllActiveTodos() {
         ArrayList<Todo> activeTodos = new ArrayList<>();
         todoRepository.findAll().forEach(todo -> {
-            if (!todo.isSoftDeleted()) {
+            if (!todo.isSoftDeleted() && (todo.getStatus().equals("pending") || todo.getStatus().equals("in progress")
+                    || todo.getStatus().equals("incomplete"))) {
                 activeTodos.add(todo);
             }
         });
