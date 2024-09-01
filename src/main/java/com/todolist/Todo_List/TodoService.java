@@ -53,7 +53,7 @@ public class TodoService {
     public List<Todo> getAllTodosByStatus(String status) {
         ArrayList<Todo> todosByStatus = new ArrayList<>();
         todoRepository.findAll().forEach(todo -> {
-            if (todo.getStatus().equals(status)) {
+            if (todo.getStatus().equals(status) && !todo.getIsSoftDeleted()) {
                 todosByStatus.add(todo);
             }
         });
@@ -66,7 +66,7 @@ public class TodoService {
 
     public Todo updateTodoStatus(Long id, String status) {
         Todo todo = todoRepository.findById(id).get();
-        todo.setStatus("Completed");
+        todo.setStatus(status);
         return todoRepository.save(todo);
     }
 

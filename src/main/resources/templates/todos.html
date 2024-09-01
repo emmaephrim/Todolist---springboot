@@ -351,6 +351,35 @@
           <table id="example" class="display" style="width: 100%">
             <thead>
               <tr>
+                <td class="select-all" style="border-bottom: 0">
+                  Select All:
+                  <input type="checkbox" id="select-all" />
+                </td>
+                <td style="border-bottom: 0">
+                  <select
+                    name=""
+                    id="mark-as"
+                    class="capitalize"
+                    style="width: 100%"
+                    th:onchange="submitSelectedIds()"
+                  >
+                    <option selected th:value="''" disabled>Action</option>
+                    <option th:value="pending">Pending</option>
+                    <option th:value="'in progress'">In Progress</option>
+                    <option th:value="completed">Completed</option>
+                    <option th:value="canceled">Canceled</option>
+                    <option th:value="incomplete">Incomplete</option>
+                    <option th:value="archived">Archived</option>
+                    <option th:value="'soft-delete'">
+                      <div class="border-t-2 border-black bg-red-200">
+                        Delete
+                      </div>
+                    </option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
                 <th>NO</th>
                 <th>Title</th>
                 <th>Status</th>
@@ -361,7 +390,16 @@
             </thead>
             <tbody>
               <tr th:each="todo, stat : ${todos}">
-                <td th:text="${stat.count}" />
+                <td>
+                  <div class="flex justify-evenly">
+                    <span th:text="${stat.count}"></span>
+                    <input
+                      type="checkbox"
+                      name="selectedIds"
+                      th:value="${todo.id}"
+                    />
+                  </div>
+                </td>
                 <td th:text="${todo.title}" />
                 <td>
                   <!-- Modal toggle -->
@@ -582,20 +620,7 @@ todo.status == 'archived' ? 'bg-purple-500 hover:bg-purple-600' : ''}"
             .responsive.recalc();
         });
       </script>
-
-      <script>
-        // Function to simulate a button click
-        function hidToast() {
-          const toastContainer = document.getElementById("toast");
-          if (toastContainer) {
-            toastContainer.style.display = "none";
-          }
-        }
-        // Set a timeout to click the toastContainer 3 seconds after the page is mounted
-        window.addEventListener("load", () => {
-          setTimeout(hidToast, 3000);
-        });
-      </script>
+      <script th:src="@{/todos.js}"></script>
     </body>
   </html>
 </html>

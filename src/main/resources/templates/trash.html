@@ -305,6 +305,40 @@
         <div class="md:px-40">
           <table id="example" class="display" style="width: 100%">
             <thead>
+              <!-- Select All Feature -->
+              <tr>
+                <td class="select-all" style="border-bottom: 0">
+                  Select All:
+                  <input type="checkbox" id="select-all" />
+                </td>
+                <td style="border-bottom: 0">
+                  <!-- id="confirm-delete" -->
+
+                  <select
+                    name=""
+                    th:onchange="submitSelectedIds()"
+                    id="mark-as"
+                    class="w-full"
+                  >
+                    <option th:value="''" selected disabled>Action</option>
+                    <option th:value="delete">
+                      <button
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                      >
+                        Delete
+                      </button>
+                    </option>
+                    <option th:value="restore">
+                      <button
+                        type="submit"
+                        class="text-yellow-700 bg-yellow-200 hover:bg-yellow-100 focus:ring-4 focus:ring-yellow-300 font-medium text-lg px-2 py-1 m-1"
+                      >
+                        Restore
+                      </button>
+                    </option>
+                  </select>
+                </td>
+              </tr>
               <tr>
                 <th>NO</th>
                 <th>Title</th>
@@ -314,9 +348,18 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody th:each="todo, stat : ${todos}">
-              <tr>
-                <td th:text="${stat.index + 1}" />
+            <tbody>
+              <tr th:each="todo, stat : ${todos}">
+                <td>
+                  <div class="flex justify-evenly">
+                    <span th:text="${stat.count}"></span>
+                    <input
+                      type="checkbox"
+                      name="selectedIds"
+                      th:value="${todo.id}"
+                    />
+                  </div>
+                </td>
                 <td th:text="${todo.title}" />
                 <td>
                   <!-- Modal toggle -->
@@ -329,10 +372,12 @@ todo.status == 'canceled' ? 'bg-red-500 hover:bg-red-600' :
 todo.status == 'incomplete' ? 'bg-orange-500 hover:bg-orange-600' :
 todo.status == 'archived' ? 'bg-purple-500 hover:bg-purple-600' : ''}"
                     th:classappend="'flex justify-center'"
+                    style="width: 100%"
                   >
                     <button
-                      th:class="'text-nowrap text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 ' + ${btnClass}"
+                      th:class="'capitalize text-nowrap text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 ' + ${btnClass}"
                       type="button"
+                      style="width: 100%"
                     >
                       <span th:text="${todo.status}"></span>
                     </button>
@@ -461,43 +506,8 @@ todo.status == 'archived' ? 'bg-purple-500 hover:bg-purple-600' : ''}"
             .columns.adjust()
             .responsive.recalc();
         });
-
-        function showDeleteModal(todoId) {
-          const deleteModal = document.getElementById("delete-modal");
-          deleteModal.classList.remove("hidden");
-
-          const confirmDeleteBtn = document.getElementById("confirm-delete");
-          confirmDeleteBtn.onclick = function () {
-            // Submit the form to delete the todo
-            document.getElementById(`delete-form-${todoId}`).submit();
-          };
-
-          const cancelDeleteBtn = document.getElementById("cancel-delete");
-          cancelDeleteBtn.onclick = function () {
-            deleteModal.classList.add("hidden");
-          };
-
-          const cancelDeleteIcon =
-            document.getElementById("cancel-delete-icon");
-          cancelDeleteIcon.onclick = function () {
-            deleteModal.classList.add("hidden");
-          };
-        }
       </script>
-
-      <script>
-        // Function to simulate a button click
-        function hidToast() {
-          const toastContainer = document.getElementById("toast");
-          if (toastContainer) {
-            toastContainer.style.display = "none";
-          }
-        }
-        // Set a timeout to click the toastContainer 3 seconds after the page is mounted
-        window.addEventListener("load", () => {
-          setTimeout(hidToast, 3000);
-        });
-      </script>
+      <script th:src="@{/trash.js}"></script>
     </body>
   </html>
 </html>

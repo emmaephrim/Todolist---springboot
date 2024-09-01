@@ -21,7 +21,7 @@ public class Todo {
     private String title;
     @Column
     private String description;
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Incomplete'")
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'incomplete'")
     private String status;
     @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -30,7 +30,7 @@ public class Todo {
     private boolean isSoftDeleted;
 
     public Todo() {
-        this.status = "Incomplete";
+        this.status = "incomplete";
     }
 
     public Long getId() {
@@ -39,6 +39,14 @@ public class Todo {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setIsSoftDeleted(boolean isSoftDeleted) {
+        this.isSoftDeleted = isSoftDeleted;
+    }
+
+    public boolean getIsSoftDeleted() {
+        return isSoftDeleted;
     }
 
     public String getTitle() {

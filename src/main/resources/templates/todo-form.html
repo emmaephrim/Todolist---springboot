@@ -138,6 +138,7 @@
           <!-- Hidden ID Field -->
           <input type="hidden" th:field="*{id}" />
 
+          <!-- Title Field -->
           <div>
             <label
               for="title"
@@ -151,8 +152,17 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Todo Title"
               required
+              minlength="3"
+              maxlength="100"
             />
+            <div
+              class="text-red-600 text-sm"
+              th:if="${#fields.hasErrors('title')}"
+              th:errors="*{title}"
+            ></div>
           </div>
+
+          <!-- Status Field (Visible only when editing) -->
           <div th:if="${todo.id != null}">
             <label
               for="status"
@@ -160,9 +170,10 @@
               >Status</label
             >
             <select
-              id=""
+              id="status"
               th:field="*{status}"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
             >
               <option selected th:value="__placeholder__" disabled>
                 Choose a Status
@@ -174,15 +185,14 @@
               <option th:value="incomplete">Incomplete</option>
               <option th:value="archived">Archived</option>
             </select>
-            <!-- <input
-              type="text"
-              id="status"
-          
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Todo Title"
-              required
-            /> -->
+            <div
+              class="text-red-600 text-sm"
+              th:if="${#fields.hasErrors('status')}"
+              th:errors="*{status}"
+            ></div>
           </div>
+
+          <!-- Date Field -->
           <div>
             <label
               for="date"
@@ -196,7 +206,14 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             />
+            <div
+              class="text-red-600 text-sm"
+              th:if="${#fields.hasErrors('date')}"
+              th:errors="*{date}"
+            ></div>
           </div>
+
+          <!-- Description Field -->
           <div>
             <label
               for="description"
@@ -209,8 +226,17 @@
               th:field="*{description}"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Description"
+              required
+              maxlength="225"
             ></textarea>
+            <div
+              class="text-red-600 text-sm"
+              th:if="${#fields.hasErrors('description')}"
+              th:errors="*{description}"
+            ></div>
           </div>
+
+          <!-- Submit Button -->
           <button
             type="submit"
             class="mt-4 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
